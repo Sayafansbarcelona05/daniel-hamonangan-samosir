@@ -4,6 +4,11 @@ import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Contact from "@/components/Contact";
 
+// Memaksa halaman ini untuk selalu di-render ulang di server setiap kali
+// ada yang membuka website, supaya data project dari Supabase (termasuk
+// perubahan/tambahan terbaru) selalu ter-update tanpa perlu redeploy manual.
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <main className="min-h-screen px-5 text-white sm:px-6 lg:px-10">
