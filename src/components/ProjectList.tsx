@@ -16,13 +16,19 @@ type Project = {
 
 type ViewMode = "grid" | "list";
 
+// Helper: pastikan selalu berupa array, walaupun data dari Supabase
+// ternyata null, undefined, atau bukan array (misal string biasa).
+function toTechArray(value: unknown): string[] {
+  return Array.isArray(value) ? value : [];
+}
+
 export default function ProjectList({ projects }: { projects: Project[] }) {
   const [search, setSearch] = useState("");
   const [selectedTech, setSelectedTech] = useState("All");
   const [view, setView] = useState<ViewMode>("grid");
 
   const technologies = useMemo(() => {
-    const list = projects.flatMap((project) => project.technologies ?? []);
+    const list = projects.flatMap((project) => toTechArray(project.technologies));
     return ["All", ...Array.from(new Set(list))];
   }, [projects]);
 
@@ -30,19 +36,20 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
     const keyword = search.trim().toLowerCase();
 
     return projects.filter((project) => {
+      const techList = toTechArray(project.technologies);
+
       const text = [
         project.title,
         project.short_description,
         project.project_type,
-        ...(project.technologies ?? []),
+        ...techList,
       ]
         .join(" ")
         .toLowerCase();
 
       const matchSearch = keyword === "" || text.includes(keyword);
       const matchTech =
-        selectedTech === "All" ||
-        project.technologies?.includes(selectedTech);
+        selectedTech === "All" || techList.includes(selectedTech);
 
       return matchSearch && matchTech;
     });
@@ -190,7 +197,7 @@ export default function ProjectList({ projects }: { projects: Project[] }) {
                 </p>
 
                 <div className="mt-6 flex flex-wrap gap-2">
-                  {project.technologies?.map((item) => (
+                  {toTechArray(project.technologies).map((item) => (
                     <span
                       key={item}
                       className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1.5 text-xs text-white/70"
