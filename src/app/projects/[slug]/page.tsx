@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Calendar,
   Download,
+  ExternalLink,
   Play,
 } from "lucide-react";
 
@@ -30,6 +31,7 @@ type Project = {
   technologies: string[];
   created_at: string;
   download_url?: string | null;
+  live_url?: string | null;
   project_media: ProjectMedia[];
 };
 
@@ -300,25 +302,39 @@ export default function ProjectDetail({
               </div>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-10 flex flex-col gap-3">
+              {project.live_url && (
+                <a
+                  href={project.live_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#5fa9e8] px-6 py-4 font-semibold text-black transition hover:scale-[1.02]"
+                >
+                  <ExternalLink size={20} />
+                  Lihat Project
+                </a>
+              )}
+
               {project.download_url ? (
                 <a
                   href={project.download_url}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#5fa9e8] px-6 py-4 font-semibold text-black transition hover:scale-[1.02]"
+                  className="flex w-full items-center justify-center gap-3 rounded-2xl border border-white/10 px-6 py-4 font-semibold text-white transition hover:border-[#5fa9e8] hover:text-[#5fa9e8]"
                 >
                   <Download size={20} />
                   Download Project
                 </a>
               ) : (
-                <button
-                  type="button"
-                  disabled
-                  className="w-full rounded-2xl border border-white/10 px-6 py-4 text-white/40"
-                >
-                  Download Tidak Tersedia
-                </button>
+                !project.live_url && (
+                  <button
+                    type="button"
+                    disabled
+                    className="w-full rounded-2xl border border-white/10 px-6 py-4 text-white/40"
+                  >
+                    Tidak Tersedia
+                  </button>
+                )
               )}
             </div>
 
