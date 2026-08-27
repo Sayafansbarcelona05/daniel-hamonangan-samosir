@@ -2,7 +2,7 @@ import { ArrowUpRight, Mail, MessageCircle } from "lucide-react";
 
 const contactInfo = {
   email: "Danielsamosir0501@gmail.com",
-  whatsapp: "6282252939215",
+  whatsapp: "6287728637231",
   github: "https://github.com/Sayafansbarcelona05",
   linkedin: "https://www.linkedin.com/in/danielhamonangansamosir",
 };
